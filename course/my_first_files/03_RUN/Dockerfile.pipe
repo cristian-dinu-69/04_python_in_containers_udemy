@@ -1,0 +1,4 @@
+FROM python
+RUN find / -name "python*" | wc -l
+# $ docker build -f Dockefile.pipe .
+# SHELL["/bin/bash","-c"]

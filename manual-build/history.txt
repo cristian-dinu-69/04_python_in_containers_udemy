@@ -1,0 +1,82 @@
+1. copy paste the code from https://palletsprojects.com/p/flask/
+to file hello.py
+
+# save this as app.py
+from flask import Flask, request
+from markupsafe import escape
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    name = request.args.get("name", "World")
+    return f'Hello, {escape(name)}!Greetings from a container'
+
+2. setup the env , atention to cd /app
+
+cd /app
+export FLASK_APP="hello"
+export FLASK_ENV="development"
+export FLASK_RUN_HOST="0.0.0.0"
+flask run
+
+
+3. create container manual din imaginea python cu expose port 5000:5000
+
+docker create -it --name manual -p 5000:5000 python /bin/sh
+
+4. start container in mod interactiv
+
+docker start -i manual
+
+5. mkdir /app
+exit container
+
+6. copy hello.py si start-app.py in container in director /app
+docker cp hello.py manual:/app
+docker cp start-app manual:/app
+
+7. start container la fel ca mai sus
+docker start -i manual
+
+8.cd /app - verific ca fisierele sunt acolo
+dau drept de executie lui start-app.sh cu 
+
+chmod +x start-app.sh
+
+9. instalez flask cu :
+pip install flask
+
+10. rulez :
+/app/start-app.sh
+
+11. ma duc in browser si localhost:5000
+reload de cateva ori.
+
+ok- prima parte 
+
+12. creez imagine din container cu commit:
+
+docker commit manual manual_image:1.0
+
+verific cu 
+docker images
+
+pornesc/creez un container in mod interactiv -it (care se va sterge automat la terminare --rm) din imaginea manual_image:1.0
+cu expunerea portului 5000 in host si in container
+
+docker run --rm -it -p 5000:5000 manual_image:1.0
+
+# /app/start-app
+
+13. Automatizare 
+creez o imagie la care modific default CMD / suprascriu ai sa porneasca automat
+
+docker commit --change "CMD /app/start-app.sh" manual manual_image:1.1
+
+pornesc/creez un container in mod interactiv -it (care se va sterge automat la terminare --rm) din imaginea manual_image:1.0
+cu expunerea portului 5001 in host si 50000 in container
+
+docker run --rm -it -p 5001:5000 manual_image:1.1
+
+verific localhost:5001

@@ -1,0 +1,49 @@
+cd course
+git clone https://github.com/pythonincontainers/myfirst
+cd myfirst
+docker container create --it name mypython python
+docker cp myfirst.py mypython:/tmp/myfirst.py
+docker start -i mypython
+>>> import os
+>>> os.listdir("/tmp")
+["myfirst.py"]
+>>> exec(open("tmp/myfirst.py").read())
+exec(open("tmp/myfirst.py").read())
+
+Python in Containers! Version 1
+
+# another way is the bind mount volume method !
+docker run -v <host_folder>:<container_folder>
+docker container run --name mypython -it -v ${PWD}:/app python
+
+# modify in myfirst.py something !
+exec(open("app/myfirst.py").read()) will show the modification !
+
+try:
+
+docker run -it --name myfirst -v ${PWD}:/app python python /app/myfirst.py
+works - but instructed docker to NOT execute the default command
+
+docker run -it --name mysecond -v ${PWD}:/app python python /app/mysecond.py
+interactive mode
+
+docker run -it --name mypython -v ${PWD}:/app python /bin/bash
+full interactive
+cd /app
+pip install flask
+root@f6809957fdf8:/app# export FLASK_DEBUG=1
+root@f6809957fdf8:/app# export FLASK_APP=mythird.py
+root@f6809957fdf8:/app# flask run --host=0.0.0.0
+works !
+
+* Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.0.2:5000 - doar pe asta merge
+
+adaug port
+docker run -it --name mythird -v ${PWD}:/app -p 5001:5000 python /bin/bash
+cd /app
+pip install flask
+root@f6809957fdf8:/app# export FLASK_DEBUG=1
+root@f6809957fdf8:/app# export FLASK_APP=mythird.py
+root@f6809957fdf8:/app# flask run --host=0.0.0.0

@@ -1,0 +1,30 @@
+$ docker version
+$ docker image pull python
+$ docker container create --tty --interactive python
+$ docker container ps --all
+$ docker container rename confident_lederberg mypython
+$ docker container ps --all
+$ docker container start --interactive mypython
+
+>>> import socket
+>>> print(socket.gethostname())
+# get container id
+
+$ docker container ps --all
+>>> exit(99)
+$ docker container start --interactive mypython
+$ docker container rm mypython
+$ docker rmi python
+$ docker run -it --name mypython python
+$ docker ps -a
+$ docker run -it --name mycentos centos
+
+# python
+>>>exit()
+# exit
+$ docker ps -a
+
+$ docker rm mycentos
+$ docker --help
+$ docker run --help
+$ docker rm --help

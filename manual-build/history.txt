@@ -80,3 +80,9 @@ cu expunerea portului 5001 in host si 50000 in container
 docker run --rm -it -p 5001:5000 manual_image:1.1
 
 verific localhost:5001
+
+Create Dockerfile
+docker build -t automated-image:1.0 .
+Create Dockerfile.env
+docker build -f Dockerfile.env -t automated-image:1.1 .
+docker run --rm -it -p 5000:5000 automated-image:1.1
